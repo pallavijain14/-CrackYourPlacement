@@ -1,0 +1,15 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int buy = prices[0], Profit = 0;
+        for(int i = 1;i < n; i++){
+            if(buy < prices[i])
+                Profit += prices[i] - buy;
+                buy = prices[i];
+        }
+            return Profit;  
+    }
+    
+}  
+
+TC : O(N) SC : O(N)
