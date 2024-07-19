@@ -1,0 +1,39 @@
+class Solution {
+    public List<List<Integer>> fourSum(int[] arr, int target) {
+        
+    Arrays.sort(arr);
+        ArrayList<Integer>list=new  ArrayList<>();
+        List<List<Integer>>list2=new  ArrayList<>();
+        HashSet<List<Integer>>mpp=new HashSet<>();
+        int i=0;
+        int j=1;int k=2;int l=arr.length-1;
+        while(i<j &&k<l){
+        while(j<k &&k<l){   
+           while(k<l){
+            long sum=(long)arr[i]+arr[j]+arr[k]+arr[l];
+            if(sum==target)
+            {
+                 Collections.addAll(list,arr[i],arr[j],arr[k],arr[l]);
+                 mpp.add(list);
+                 list=new  ArrayList<>();
+                k++;l--;
+            }
+            else if(sum>target)
+            l--;
+            else if(sum<target)
+            k++;
+           }
+          j++;
+          k=j+1;l=arr.length-1;
+        }
+           i++;
+           j=i+1;k=j+1;l=arr.length-1;  
+        }
+        
+        for(List<Integer> ii:mpp){
+            list2.add(ii);
+        }
+        
+        return list2;
+    }
+}
