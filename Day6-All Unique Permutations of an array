@@ -1,0 +1,33 @@
+class Solution {
+    static ArrayList<ArrayList<Integer>> uniquePerms(ArrayList<Integer> arr , int n) {
+        ArrayList<ArrayList<Integer>>ans=new ArrayList<>();
+        ArrayList<Integer>temp=new ArrayList<>();
+        HashMap<Integer,Integer>h=new HashMap<>();
+        for(int i=0;i<arr.size();i++)
+        {
+            h.put(arr.get(i),h.getOrDefault(arr.get(i),0)+1);
+        }
+        solve(arr,n,ans,temp,h);
+        return ans;
+    }
+    public static void solve(ArrayList<Integer> arr,int n,ArrayList<ArrayList<Integer>> ans,ArrayList<Integer>temp,HashMap<Integer,Integer>h)
+    {
+        if(temp.size()==n)
+        {
+            ans.add(new ArrayList(temp));
+            return;
+        }
+        for(Map.Entry<Integer,Integer>e:h.entrySet())
+        {
+            int k=e.getKey();
+            int c=e.getValue();
+            if(c==0)
+            continue;
+            temp.add(k);
+            h.put(k,c-1);
+            solve(arr,n,ans,temp,h);
+            temp.remove(temp.size()-1);
+            h.put(k,c);
+        }
+    }
+};
