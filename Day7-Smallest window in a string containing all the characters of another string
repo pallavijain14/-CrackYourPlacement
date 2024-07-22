@@ -1,0 +1,53 @@
+class Solution {
+    public static String smallestWindow(String s, String p) {
+        if (s == null || p == null || s.length() == 0 || p.length() == 0) {
+            return "-1";
+        }
+        
+        // Frequency map for characters in p
+        HashMap<Character, Integer> freqP = new HashMap<>();
+        for (char c : p.toCharArray()) {
+            freqP.put(c, freqP.getOrDefault(c, 0) + 1);
+        }
+        
+        int left = 0;
+        int minLength = Integer.MAX_VALUE;
+        int start = 0;
+        int matchedCount = 0;
+        
+        // Frequency map for characters in the current window
+        HashMap<Character, Integer> windowFreq = new HashMap<>();
+        
+        for (int right = 0; right < s.length(); right++) {
+            char rightChar = s.charAt(right);
+            
+            if (freqP.containsKey(rightChar)) {
+                windowFreq.put(rightChar, windowFreq.getOrDefault(rightChar, 0) + 1);
+                
+                // Only increment matchedCount if the frequency in the window is less than or equal to the frequency in p
+                if (windowFreq.get(rightChar) <= freqP.get(rightChar)) {
+                    matchedCount++;
+                }
+            }
+            
+            // Try to shrink the window from the left if all characters are matched
+            while (matchedCount == p.length()) {
+                if (right - left + 1 < minLength) {
+                    minLength = right - left + 1;
+                    start = left;
+                }
+                
+                char leftChar = s.charAt(left);
+                if (freqP.containsKey(leftChar)) {
+                    windowFreq.put(leftChar, windowFreq.get(leftChar) - 1);
+                    if (windowFreq.get(leftChar) < freqP.get(leftChar)) {
+                        matchedCount--;
+                    }
+                }
+                left++;
+            }
+        }
+        
+        return minLength == Integer.MAX_VALUE ? "-1" : s.substring(start, start + minLength);
+    }
+}
